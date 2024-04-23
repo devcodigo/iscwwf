@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('inventory');
             $table->string('description')->nullable();
             $table->integer('price')->default(0);
             $table->string('purchased')->nullable();

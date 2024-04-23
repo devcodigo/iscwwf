@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Manager\Resources;
 
-use App\Filament\Resources\StockResource\Pages;
-use App\Filament\Resources\StockResource\RelationManagers;
-use App\Filament\Resources\StockResource\RelationManagers\ItemsRelationManager;
+use App\Filament\Manager\Resources\StockResource\Pages;
+use App\Filament\Manager\Resources\StockResource\RelationManagers;
 use App\Models\Stock;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,10 +18,6 @@ class StockResource extends Resource
     protected static ?string $model = Stock::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Majetek';
-
-    protected static ?string $modelLabel = 'Položka';
-    protected static ?string $pluralModelLabel = 'Položky';
 
     public static function form(Form $form): Form
     {
@@ -31,12 +26,11 @@ class StockResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Select::make('category_id')
-                    ->required()
-                    ->relationship('category','name'),
+                Forms\Components\Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->required(),
                 Forms\Components\Toggle::make('active')
-                    ->required()
-                    ->default(true),
+                    ->required(),
             ]);
     }
 
@@ -61,28 +55,22 @@ class StockResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category_id')
-                ->relationship('category','name'),
-                Tables\Filters\Filter::make('active')->toggle()->default(true),
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-               
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->recordAction(Tables\Actions\EditAction::class)
-            ;
+            ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            ItemsRelationManager::class,
+            //
         ];
     }
 

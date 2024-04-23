@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->date('Date')->useCurrent();
+            $table->date('date')->useCurrent();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('item_id')->constrained();
             $table->foreignId('storage_id')->constrained();
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }
