@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->integer('price')->default(0);
-            $table->string('pruchased')->nullable();
+            $table->string('purchased')->nullable();
             $table->string('condition')->default('new');
             $table->foreignId('stock_id')->constrained();
             $table->timestamps();
