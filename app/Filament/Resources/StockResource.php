@@ -18,8 +18,9 @@ class StockResource extends Resource
 {
     protected static ?string $model = Stock::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
     protected static ?string $navigationGroup = 'Majetek';
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $modelLabel = 'Položka';
     protected static ?string $pluralModelLabel = 'Položky';
@@ -30,12 +31,15 @@ class StockResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->label('Název')
                     ->maxLength(255),
                     Forms\Components\Select::make('category_id')
                     ->required()
+                    ->label('kategorie')
                     ->relationship('category','name'),
                 Forms\Components\Toggle::make('active')
                     ->required()
+                    ->label('Aktivní')
                     ->default(true),
             ]);
     }
@@ -51,19 +55,16 @@ class StockResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
-                ->relationship('category','name'),
-                Tables\Filters\Filter::make('active')->toggle()->default(true),
+                ->relationship('category','name')
+                ->label('Kategorie'),
+                Tables\Filters\Filter::make('active')
+                ->toggle()
+                ->label('Aktivní')
+                ->default(true),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

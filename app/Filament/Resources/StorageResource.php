@@ -17,7 +17,12 @@ class StorageResource extends Resource
 {
     protected static ?string $model = Storage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static ?string $navigationGroup = 'Majetek';
+    protected static ?int $navigationSort = 5;
+
+    protected static ?string $modelLabel = 'Umístění';
+    protected static ?string $pluralModelLabel = 'Umístění';
 
     public static function form(Form $form): Form
     {

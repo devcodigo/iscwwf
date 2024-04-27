@@ -17,23 +17,32 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
+    protected static ?string $navigationGroup = 'Majetek';
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $modelLabel = 'Transakce';
+    protected static ?string $pluralModelLabel = 'Transakce';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('date')
-                    ->required(),
+                    ->required()
+                    ->label('Datum'),
                 Forms\Components\Select::make('user_id')
                     ->required()
-                    ->relationship('user','name'),
+                    ->relationship('user','name')
+                    ->label('Uživatel'),
                 Forms\Components\Select::make('item_id')
                     ->required()
-                    ->relationship('item','name'),
+                    ->relationship('item','name')
+                    ->label('Exemplář'),
                 Forms\Components\Select::make('storage_id')
                     ->required()
-                    ->relationship('storage','name'),    
+                    ->relationship('storage','name')
+                    ->label('Umístění'),    
                 Forms\Components\TextInput::make('comment'),
                 
                 

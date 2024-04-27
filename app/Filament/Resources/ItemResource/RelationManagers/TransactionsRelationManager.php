@@ -19,14 +19,18 @@ class TransactionsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('date')
-                    ->required(),
+                    ->required()
+                    ->label('Datum'),
                 Forms\Components\Select::make('user_id')
                     ->required()
-                    ->relationship('user','name'),
+                    ->relationship('user','name')
+                    ->label('Uživatel'),
                 Forms\Components\Select::make('storage_id')
                     ->required()
-                    ->relationship('storage','name'),    
-                Forms\Components\TextInput::make('comment'),
+                    ->relationship('storage','name')
+                    ->label('Umístění'),    
+                Forms\Components\TextInput::make('comment')
+                    ->label('Komentář'),
             ]);
     }
 
@@ -37,13 +41,16 @@ class TransactionsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('date')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Datum'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Uživatel'),
             Tables\Columns\TextColumn::make('storage.name')
-                ->numeric()
-                ->sortable(),
+                    ->numeric()
+                    ->sortable()
+                    ->label('Umístění'),
             ])
             ->filters([
                 //
@@ -54,6 +61,7 @@ class TransactionsRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -18,7 +18,12 @@ class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document';
+    protected static ?string $navigationGroup = 'Majetek';
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $modelLabel = 'Exemplář';
+    protected static ?string $pluralModelLabel = 'Exempláře';
 
     public static function form(Form $form): Form
     {
@@ -26,22 +31,27 @@ class ItemResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('inventory')
                     ->required()
+                    ->label('Inv. č.')
                     ->maxLength(255)
                     ->label('Inv. číslo'),
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->label('Název')
                     ->maxLength(255)
                     ->label('Název'),
                 Forms\Components\TextInput::make('description')
                     ->maxLength(255)
+                    ->label('Popis')
                     ->default(null),
                 Forms\Components\TextInput::make('price')
                     ->required()
+                    ->label('Cena')
                     ->numeric()
                     ->default(0)
                     ->prefix('Kč'),
                 Forms\Components\TextInput::make('purchased')
                     ->maxLength(255)
+                    ->label('Pořízeno')
                     ->default(null),
                 Forms\Components\Select::make('condition')
                     ->options([
@@ -52,9 +62,11 @@ class ItemResource extends Resource
                         'Zničeno' => 'Zničeno',
                         'Ztraceno' => 'Ztraceno',
                         'Vyřazeno' => 'Vyřazeno'])
-                    ->required(),
+                    ->required()
+                    ->label('Stav'),
                 Forms\Components\Select::make('stock_id')
                     ->required()
+                    ->label('Položka')
                     ->relationship('stock','name'),
             ]);
     }
@@ -64,30 +76,36 @@ class ItemResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('inventory')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Inv. č.'),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Název'),
                 Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
+                    ->label('Pops'),
                 Tables\Columns\TextColumn::make('price')
-                    ->money(),
+                    ->money()
+                    ->label('Cena'),
                 Tables\Columns\TextColumn::make('purchased')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('condition'),
-                    
+                    ->sortable()
+                    ->label('Pořízeno'),
+                Tables\Columns\TextColumn::make('condition')
+                    ->label('Stav'),
                 Tables\Columns\TextColumn::make('stock.name')
-                    ->searchable(),
+                    ->label('Položka'),
                 Tables\Columns\TextColumn::make('stock.category.name')
-                    ->searchable(),
+                    ->label('Kategorie'),
                 Tables\Columns\TextColumn::make('lastTransaction.storage.name')
-                    ->searchable(),
+                ->label('Umístění')
 
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('stock_id')                
-                ->relationship('stock','name'),
+                ->relationship('stock','name')
+                ->label('Položka'),
                 Tables\Filters\SelectFilter::make('stock.category_id')
-                ->relationship('stock.category','name'),
+                ->relationship('stock.category','name')
+                ->label('Kategorie'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

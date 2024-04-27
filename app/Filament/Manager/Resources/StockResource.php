@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources;
 
 use App\Filament\Manager\Resources\StockResource\Pages;
 use App\Filament\Manager\Resources\StockResource\RelationManagers;
+use App\Filament\Manager\Resources\StockResource\RelationManagers\ItemsRelationManager;
 use App\Models\Stock;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,20 +18,26 @@ class StockResource extends Resource
 {
     protected static ?string $model = Stock::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationGroup = 'Majetek';
+    
+    protected static ?string $modelLabel = 'Položka';
+    protected static ?string $pluralModelLabel = 'Položky';
+
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required()
+                ->disabled()
                     ->maxLength(255),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
-                    ->required(),
+                    ->disabled(),
                 Forms\Components\Toggle::make('active')
-                    ->required(),
+                ->disabled(),
             ]);
     }
 
@@ -39,38 +46,33 @@ class StockResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Název'),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->numeric()
+                    ->label('Kategorie')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('active')
+                    ->label('Aktivní')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->relationship('category','name'),
+                Tables\Filters\Filter::make('active')->toggle()->default(true),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+       
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+ 
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            ItemsRelationManager::class,
         ];
     }
 
@@ -78,7 +80,7 @@ class StockResource extends Resource
     {
         return [
             'index' => Pages\ListStocks::route('/'),
-            'create' => Pages\CreateStock::route('/create'),
+        //    'create' => Pages\CreateStock::route('/create'),
             'edit' => Pages\EditStock::route('/{record}/edit'),
         ];
     }
