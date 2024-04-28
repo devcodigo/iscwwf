@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -80,10 +81,17 @@ class ItemsRelationManager extends RelationManager
                         ->required()
                         ->label('Datum')
                         ->default(now()),
+                    Forms\Components\Select::make('storage_type')
+                        ->live()
+                        ->dehydrated(false)
+                        ->options(Storage::orderby('type')->pluck('type','type')->toArray())
+                        ->label('Typ umístění'),    
                     Forms\Components\Select::make('storage_id')
                         ->required()
-                        ->options(Storage::pluck('name','id')->toArray())
-                        ->label('Umístění'),    
+                        ->options( function (Forms\Get $get): Collection {
+                            return $get('storage_type') ? Storage::where('type',$get('storage_type'))->orderby('name')->pluck('name','id') : Storage::orderby('name')->pluck('name','id');
+                        } )
+                        ->label('Umístění'),  
                 ])
                 ->action( function(Item $item,array $data):void {
                     $transaction = new Transaction();
