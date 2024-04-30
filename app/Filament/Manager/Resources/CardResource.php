@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources;
 
 use App\Filament\Manager\Resources\CardResource\Pages;
 use App\Filament\Manager\Resources\CardResource\RelationManagers;
+use App\Filament\Manager\Resources\CardResource\RelationManagers\ItemsRelationManager;
 use App\Models\Card;
 use App\Models\Storage;
 use Filament\Forms;
@@ -25,6 +26,7 @@ class CardResource extends Resource
     protected static ?string $modelLabel = 'Karta výstroje';
     protected static ?string $pluralModelLabel = 'Karty výstroje';
     
+    protected static ?int $navigationSort = 2;
 
     public static function getEloquentQuery(): Builder
 {
@@ -50,17 +52,18 @@ class CardResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->label('Detail'),
+                
                 Tables\Actions\Action::make('Card')
                     ->label('Karta')
                     ->url(fn($record) => route('stockCard',['id'=> $record->id]))
+                    ->openUrlInNewTab()
                     ->icon('heroicon-o-document-text'),
             
             ])
             ->bulkActions([
                 
-            ]);
+            ])
+            ->recordUrl(null);
     }
 
     public static function getRelations(): array

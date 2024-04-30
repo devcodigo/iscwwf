@@ -21,9 +21,10 @@ class StockResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     protected static ?string $navigationGroup = 'Majetek';
     
-    protected static ?string $modelLabel = 'Položka';
-    protected static ?string $pluralModelLabel = 'Položky';
+    protected static ?string $modelLabel = 'Položka majetku';
+    protected static ?string $pluralModelLabel = 'Položky majetku';
 
+    protected static ?int $navigationSort = 1;
 
 
     public static function form(Form $form): Form

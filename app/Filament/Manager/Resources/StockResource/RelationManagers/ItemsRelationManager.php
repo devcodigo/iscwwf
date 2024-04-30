@@ -51,7 +51,8 @@ class ItemsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('inventory')
-                    ->label('Inv.č.'),
+                    ->label('Inv.č.')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Název'),
                 Tables\Columns\TextColumn::make('description')

@@ -15,8 +15,8 @@ class StockCardController extends Controller
     {
         $itemListData = Item::with('lastTransaction')->get()->where('lastTransaction.storage_id',$id);
 
-       // dd($itemListData);
+       return view('stockCard.stockCard',['lastTransaction' => $itemListData->first()?->lastTransaction, 'items' => $itemListData]);
         
-        return true;
+        //return true;
     }
 }
