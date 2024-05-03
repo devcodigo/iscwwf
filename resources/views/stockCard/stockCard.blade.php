@@ -53,7 +53,7 @@ th {
 </table>
 </span>
 <br>
-<p>Závodník nebo jeho zákonný zástupce potvrzuje správnost a úplnost informací uvedených na této kartě k datu {{ date(now()) }}. </p>
+<p>Reprezentant nebo jeho zákonný zástupce potvrzuje správnost a úplnost informací uvedených na této kartě k datu {{ date(now()) }}. </p>
 <br>
 <br>
 <p>Datum podpisu: .................................... </p>
